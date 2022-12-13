@@ -29,7 +29,7 @@ const db = new imongo();
 Connect to the database using the connect method
 
 ```javascript
-db.connect('url', 'database name');
+await db.connect('url', 'database name');
 ```
 
 Set the collections you want to use with the useCollection method
