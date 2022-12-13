@@ -14,7 +14,7 @@ export class imongo {
     return this.db;
   }
 
-  public useCollection(collection: string) {
+  public useCollection(collection: string): void {
     const usersCollection: mongoDB.Collection = this.db?.collection(collection);
     this.collections?.set(collection, usersCollection);
   }
