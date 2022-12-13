@@ -8,6 +8,8 @@ IMongo is a utility package that simplifies the always frustrating process of co
 
 ## Installation
 
+MONGODB DRIVER IS REQUIRED FOR THIS PACKAGE TO WORK CORRECTLY.
+
 Install IMongo with npm
 
 ```bash
