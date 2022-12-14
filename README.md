@@ -32,7 +32,7 @@ Connect to the database using the connect method
 await db.connect('url', 'database name');
 ```
 
-Do this instead to get a db object if you want to use mongoDB.Db methods
+Call the database method to get a db object if you want to use mongoDB.Db methods
 
 ```javascript
 const database = await db.connect('url', 'database name');
