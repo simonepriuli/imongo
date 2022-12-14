@@ -35,7 +35,7 @@ await db.connect('url', 'database name');
 Call the database method to get a db object if you want to use mongoDB.Db methods
 
 ```javascript
-const database = await db.connect('url', 'database name');
+const database = db.database();
 ```
 
 Set the collections you want to use with the useCollection method
