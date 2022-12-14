@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import * as mongoDB from 'mongodb';
 
 export class imongo {
@@ -22,9 +23,16 @@ export class imongo {
    * Set the collection you want to use in the imongo instance.
    * @param {string} Collection_name.
    */
-  public useCollection(collection: string): void {
-    const usersCollection: mongoDB.Collection = this.db?.collection(collection);
-    this.collections?.set(collection, usersCollection);
+  public useCollection(collection: string | Array<string>): void {
+    if (typeof collection == 'string') {
+      const _collection: mongoDB.Collection = this.db?.collection(collection);
+      this.collections?.set(collection, _collection);
+    } else {
+      collection.forEach((collection: string) => {
+        const _collection: mongoDB.Collection = this.db?.collection(collection);
+        this.collections?.set(collection, _collection);
+      });
+    }
   }
 
   /**
