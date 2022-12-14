@@ -28,9 +28,10 @@ export class imongo {
       const _collection: mongoDB.Collection = this.db?.collection(collection);
       this.collections?.set(collection, _collection);
     } else {
-      collection.forEach((collection: string) => {
-        const _collection: mongoDB.Collection = this.db?.collection(collection);
-        this.collections?.set(collection, _collection);
+      collection.forEach((thisCollection: string) => {
+        const _collection: mongoDB.Collection =
+          this.db?.collection(thisCollection);
+        this.collections?.set(thisCollection, _collection);
       });
     }
   }

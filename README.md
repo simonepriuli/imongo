@@ -42,6 +42,7 @@ Set the collections you want to use with the useCollection method
 
 ```javascript
 db.useCollection('users');
+db.useCollection(['users', 'posts']);
 ```
 
 Now you can use the mongodb driver methods
