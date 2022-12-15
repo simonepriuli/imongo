@@ -2,8 +2,8 @@
 import * as mongoDB from 'mongodb';
 
 export class imongo {
+  private client!: mongoDB.MongoClient;
   private db!: mongoDB.Db;
-  private dbs: Map<string, mongoDB.Db> = new Map([]);
   private collections: Map<string, mongoDB.Collection<mongoDB.Document>> =
     new Map([]);
 
@@ -12,11 +12,15 @@ export class imongo {
    * @param {string} Conn_url - The MongoDB cluster connection url, don't the database name in the string.
    * @param {string} Db_name - The MongoDB database name.
    */
-  public async connect(url: string, db: string) {
-    const client: mongoDB.MongoClient = new mongoDB.MongoClient(url);
-    await client.connect();
+  public init(url: string, db: string) {
+    this.client = new mongoDB.MongoClient(url);
+    this.db = this.client.db(db);
+    return this;
+  }
+
+  public async connect() {
+    await this.client.connect();
     console.log('Connection with MongoDB sucssessful');
-    this.db = client.db(db);
   }
 
   /**
