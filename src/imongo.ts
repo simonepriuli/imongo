@@ -1,12 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable prettier/prettier */
 import * as mongoDB from 'mongodb';
+import { z } from 'zod';
 import { CollectionClass } from './collection';
+import { validateSafe } from './validation/validate';
 
 export class imongo {
   private client!: mongoDB.MongoClient;
   private db!: mongoDB.Db;
   private collections: Map<string, CollectionClass> = new Map([]);
+
+  private lastcalledcollection = '';
 
   /**
    * Set the connection params for the MongoCluster and the database.
@@ -32,17 +38,20 @@ export class imongo {
    * Set the collection you want to use in the imongo instance.
    * @param {string | Array<string>} Collection_name. The collection name or an array of collections.
    */
-  public useCollection(collection: string | Array<string>): void {
+  public useCollection(collection: string | Array<string>) {
     if (typeof collection == 'string') {
       const _collection: mongoDB.Collection = this.db?.collection(collection);
       const newCollection = new CollectionClass(_collection);
       this.collections?.set(collection, newCollection);
+      this.lastcalledcollection = collection;
+      return this;
     } else {
       collection.forEach((thisCollection: string) => {
         const _collection: mongoDB.Collection =
           this.db?.collection(thisCollection);
         const newCollection = new CollectionClass(_collection);
         this.collections?.set(thisCollection, newCollection);
+        this.lastcalledcollection = thisCollection;
       });
     }
   }
@@ -61,12 +70,55 @@ export class imongo {
    * @return {mongoDB.Db} MongoDB.Db.
    */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public collection(collection: string) {
-    const _collection = this.collections?.get(collection)?.collection;
+  public collection(collectionName: string) {
+    const _collection = this.collections?.get(collectionName)?.collection;
+    this.lastcalledcollection = collectionName;
     return _collection;
   }
 
-  public setSchema() {
-    //
+  /**
+   * Set the schema of a collection with Zod.
+   * @param {z.ZodType} Schema Pass your schema as a Zod object.
+   * @param {string} Collection OPTIONAL, the name of the collection you want your schema to aply to. Not necessary if chained to useCollection().
+   */
+  public setSchema(schema: z.ZodType, collection?: string) {
+    if (!collection) {
+      collection = this.lastcalledcollection;
+    }
+    const oldCollection = this.collections.get(collection);
+    const newCollection = new CollectionClass(
+      oldCollection!.collection,
+      schema
+    );
+    this.collections.delete(collection);
+    this.collections.set(collection, newCollection);
+  }
+
+  /**
+   * Safely validate your object with a collection's schema.
+   * @param {object} Object the object you want to validate.
+   * @param {string} Collection OPTIONAL, the name of the collection you want your schema to aply to. Not necessary if chained to collection().
+   * @returns {object} returns an object identical to the one passed in the parameters if the schemas match. throws an error if not.
+   */
+  public useSafeValidation(object: object, collection?: string) {
+    if (!collection) {
+      collection = this.lastcalledcollection;
+    }
+    console.log(collection);
+    return validateSafe(this.collections.get(collection)?.schema, object);
+  }
+
+  /**
+   * Unsafely validate your object with a collection's schema.
+   * @param {object} Object the object you want to validate.
+   * @param {string} Collection OPTIONAL, the name of the collection you want your schema to aply to. Not necessary if chained to collection().
+   * @returns {object} returns an object identical to the one passed in the parameters if the schemas match. returns the error if not.
+   */
+  public useUnsafeValidation(object: object, collection?: string) {
+    if (!collection) {
+      collection = this.lastcalledcollection;
+    }
+    console.log(collection);
+    return validateSafe(this.collections.get(collection)?.schema, object);
   }
 }
