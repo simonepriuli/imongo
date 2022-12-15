@@ -8,8 +8,8 @@ export class imongo {
     new Map([]);
 
   /**
-   * Set the connection to the database.
-   * @param {string} Conn_url - The MongoDB cluster connection url, don't the database name in the string.
+   * Set the connection params for the MongoCluster and the database.
+   * @param {string} Cluster_url - The MongoDB cluster connection url, the database name is not required.
    * @param {string} Db_name - The MongoDB database name.
    */
   public init(url: string, db: string) {
@@ -18,6 +18,10 @@ export class imongo {
     return this;
   }
 
+  /**
+   * Connect to the MongoDB Cluster and database.
+   * This method is asynchronous.
+   */
   public async connect() {
     await this.client.connect();
     console.log('Connection with MongoDB sucssessful');
@@ -25,7 +29,7 @@ export class imongo {
 
   /**
    * Set the collection you want to use in the imongo instance.
-   * @param {string} Collection_name.
+   * @param {string | Array<string>} Collection_name. The collection name or an array of collections.
    */
   public useCollection(collection: string | Array<string>): void {
     if (typeof collection == 'string') {
