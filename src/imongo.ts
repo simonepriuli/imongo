@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable prettier/prettier */
 import * as mongoDB from 'mongodb';
+import { CollectionClass } from './collection';
 
 export class imongo {
   private client!: mongoDB.MongoClient;
   private db!: mongoDB.Db;
-  private collections: Map<string, mongoDB.Collection<mongoDB.Document>> =
-    new Map([]);
+  private collections: Map<string, CollectionClass> = new Map([]);
 
   /**
    * Set the connection params for the MongoCluster and the database.
@@ -34,12 +35,14 @@ export class imongo {
   public useCollection(collection: string | Array<string>): void {
     if (typeof collection == 'string') {
       const _collection: mongoDB.Collection = this.db?.collection(collection);
-      this.collections?.set(collection, _collection);
+      const newCollection = new CollectionClass(_collection);
+      this.collections?.set(collection, newCollection);
     } else {
       collection.forEach((thisCollection: string) => {
         const _collection: mongoDB.Collection =
           this.db?.collection(thisCollection);
-        this.collections?.set(thisCollection, _collection);
+        const newCollection = new CollectionClass(_collection);
+        this.collections?.set(thisCollection, newCollection);
       });
     }
   }
@@ -59,7 +62,11 @@ export class imongo {
    */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public collection(collection: string) {
-    const _collection = this.collections?.get(collection);
+    const _collection = this.collections?.get(collection)?.collection;
     return _collection;
+  }
+
+  public setSchema() {
+    //
   }
 }
