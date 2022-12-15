@@ -50,3 +50,19 @@ Now you can use the mongodb driver methods
 ```javascript
 const user = await db.collection('users')?.findOne({ email: 'admin@admin.it' });
 ```
+
+### Schema validation for collections with Zod
+
+Set the schema of a collection
+
+```javascript
+db.useCollection('users').setSchema(z.object({name: z.string()});
+```
+
+Now you can safely insert documents in the collection with the useSafeValidation method
+
+```javascript
+await db
+  .collection('users')
+  .insertOne(db.useSafeValidation({ name: 'Simone' }));
+```
