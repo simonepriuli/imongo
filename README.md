@@ -26,10 +26,10 @@ Create the IMongo instance
 const db = new imongo();
 ```
 
-Connect to the database using the connect method
+Init the connection settings and then connect to the database
 
 ```javascript
-await db.connect('url', 'database name');
+await db.init('url', 'database name').connect();
 ```
 
 Call the database method to get a db object if you want to use mongoDB.Db methods
