@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable prettier/prettier */
 import * as mongoDB from 'mongodb';
 import { z } from 'zod';
-import { CollectionClass } from './collection';
-import { validateSafe } from './validation/validate';
+import { CollectionClass } from '../types/collection';
+import { validateSafe, validateUnsafe } from '../validation/validate';
 
 export class imongo {
   private client!: mongoDB.MongoClient;
@@ -16,8 +17,8 @@ export class imongo {
 
   /**
    * Set the connection params for the MongoCluster and the database.
-   * @param {string} Cluster_url - The MongoDB cluster connection url, the database name is not required.
-   * @param {string} Db_name - The MongoDB database name.
+   * @param {string} url - The MongoDB cluster connection url, the database name is not required.
+   * @param {string} db - The MongoDB database name.
    */
   public init(url: string, db: string) {
     this.client = new mongoDB.MongoClient(url);
@@ -66,7 +67,7 @@ export class imongo {
 
   /**
    * Get a MongoDB collection to work with MongoDriver collection's methods.
-   * @param {string} Collection_name It works only if you pass as param a collection that you set before with the useCollection() method.
+   * @param {string} collectionName It works only if you pass as param a collection that you set before with the useCollection() method.
    * @return {mongoDB.Db} MongoDB.Db.
    */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -78,8 +79,8 @@ export class imongo {
 
   /**
    * Set the schema of a collection with Zod.
-   * @param {z.ZodType} Schema Pass your schema as a Zod object.
-   * @param {string} Collection OPTIONAL, the name of the collection you want your schema to aply to. Not necessary if chained to useCollection().
+   * @param {z.ZodType} schema Pass your schema as a Zod object.
+   * @param {string} collection OPTIONAL, the name of the collection you want your schema to aply to. Not necessary if chained to useCollection().
    */
   public setSchema(schema: z.ZodType, collection?: string) {
     if (!collection) {
@@ -96,8 +97,8 @@ export class imongo {
 
   /**
    * Safely validate your object with a collection's schema.
-   * @param {object} Object the object you want to validate.
-   * @param {string} Collection OPTIONAL, the name of the collection you want your schema to aply to. Not necessary if chained to collection().
+   * @param {object} object the object you want to validate.
+   * @param {string} collection OPTIONAL, the name of the collection you want your schema to aply to. Not necessary if chained to collection().
    * @returns {object} returns an object identical to the one passed in the parameters if the schemas match. throws an error if not.
    */
   public useSafeValidation(object: object, collection?: string) {
@@ -110,8 +111,8 @@ export class imongo {
 
   /**
    * Unsafely validate your object with a collection's schema.
-   * @param {object} Object the object you want to validate.
-   * @param {string} Collection OPTIONAL, the name of the collection you want your schema to aply to. Not necessary if chained to collection().
+   * @param {object} object the object you want to validate.
+   * @param {string} collection OPTIONAL, the name of the collection you want your schema to aply to. Not necessary if chained to collection().
    * @returns {object} returns an object identical to the one passed in the parameters if the schemas match. returns the error if not.
    */
   public useUnsafeValidation(object: object, collection?: string) {
@@ -119,6 +120,6 @@ export class imongo {
       collection = this.lastcalledcollection;
     }
     console.log(collection);
-    return validateSafe(this.collections.get(collection)?.schema, object);
+    return validateUnsafe(this.collections.get(collection)?.schema, object);
   }
 }
