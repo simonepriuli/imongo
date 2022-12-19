@@ -70,7 +70,6 @@ export class imongo {
    * @param {string} collectionName It works only if you pass as param a collection that you set before with the useCollection() method.
    * @return {mongoDB.Db} MongoDB.Db.
    */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public collection(collectionName: string) {
     const _collection = this.collections?.get(collectionName)?.collection;
     this.lastcalledcollection = collectionName;

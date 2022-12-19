@@ -17,13 +17,7 @@ Install IMongo with npm
 Import the package
 
 ```javascript
-import { imongo } from 'imongo';
-```
-
-Create the IMongo instance
-
-```javascript
-const db = new imongo();
+import { db } from 'imongo';
 ```
 
 Init the connection settings and then connect to the database
@@ -52,6 +46,12 @@ const user = await db.collection('users')?.findOne({ email: 'admin@admin.it' });
 ```
 
 ### Schema validation for collections with Zod
+
+Import z from imongo (provided by Zod)
+
+```javascript
+import { z } from 'imongo';
+```
 
 Set the schema of a collection
 
