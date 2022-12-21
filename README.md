@@ -4,7 +4,7 @@
   <p align="center">
     ✨ <a href="https://imongo.priuli.co/">IMongo docs.</a> ✨
     <br/>
-    TypeScript utility for connecting and validating schemas with MongoDB.
+    TypeScript utility package for connecting and validating schemas with MongoDB.
   </p>
 </p>
 
