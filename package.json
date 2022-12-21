@@ -1,6 +1,6 @@
 {
   "name": "imongo",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "main": "./lib/index.js",
   "files": [
@@ -44,7 +44,7 @@
   "bugs": {
     "url": "https://github.com/simonepriuli/imongo/issues"
   },
-  "homepage": "https://github.com/simonepriuli/imongo#readme",
+  "homepage": "https://imongo.priuli.co/",
   "devDependencies": {
     "@ryansonshine/commitizen": "^4.2.8",
     "@ryansonshine/cz-conventional-changelog": "^3.3.4",
