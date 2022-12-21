@@ -5,6 +5,7 @@
 /* eslint-disable prettier/prettier */
 import * as mongoDB from 'mongodb';
 import { z } from 'zod';
+import { validation } from '../errors';
 import { CollectionClass } from '../types/collection';
 import { validateSafe, validateUnsafe } from '../validation/validate';
 
@@ -105,7 +106,15 @@ export class imongo {
       collection = this.lastcalledcollection;
     }
     console.log(collection);
-    return validateSafe(this.collections.get(collection)?.schema, object);
+    const validationResult = validateSafe(
+      this.collections.get(collection)?.schema,
+      object
+    );
+    if (validationResult?.success) {
+      return validationResult.data;
+    } else {
+      validation.safeValidationError(this.collections.get(collection)?.schema);
+    }
   }
 
   /**
