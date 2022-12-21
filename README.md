@@ -1,6 +1,14 @@
 # IMongo
 
-IMongo is a utility package that simplifies the always frustrating process of connecting to MongoDB in TypeScript.
+IMongo is a TypeScript package that provides schema validation and interaction helpers for MongoDB through Zod.
+
+These are some of the features that IMongo offers:
+- MongoDriver and Zod out of the box
+- Less boilerplate
+- No need to remember any MongoDriver types
+- Easy to setup, easy to use
+- Powerful schema validation
+
 
 ## Authors
 
