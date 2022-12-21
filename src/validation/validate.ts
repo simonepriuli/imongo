@@ -3,8 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { z } from 'zod';
-import { validation } from '../errors';
-
 export function validateUnsafe(schema: z.ZodType, object: object) {
   if (schema) {
     return schema.parse(object);

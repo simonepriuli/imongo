@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable prettier/prettier */
 import * as mongoDB from 'mongodb';
-import { z } from 'zod';
+import { Schema, z } from 'zod';
 import { validation } from '../errors';
 import { CollectionClass } from '../types/collection';
 import { validateSafe, validateUnsafe } from '../validation/validate';
@@ -105,15 +105,15 @@ export class imongo {
     if (!collection) {
       collection = this.lastcalledcollection;
     }
-    console.log(collection);
-    const validationResult = validateSafe(
-      this.collections.get(collection)?.schema,
-      object
-    );
-    if (validationResult?.success) {
-      return validationResult.data;
+
+    if (this.collections.get(collection)?.schema != undefined) {
+      const validationResult = validateSafe(
+        this.collections.get(collection)?.schema,
+        object
+      );
+      return validationResult;
     } else {
-      validation.safeValidationError(this.collections.get(collection)?.schema);
+      validation.noSchemaError(collection);
     }
   }
 
@@ -127,7 +127,21 @@ export class imongo {
     if (!collection) {
       collection = this.lastcalledcollection;
     }
-    console.log(collection);
-    return validateUnsafe(this.collections.get(collection)?.schema, object);
+
+    if (this.collections.get(collection)?.schema != undefined) {
+      try {
+        const result = validateUnsafe(
+          this.collections.get(collection)?.schema,
+          object
+        );
+        return result;
+      } catch (error) {
+        validation.unsafeValodationError(
+          this.collections.get(collection)?.schema
+        );
+      }
+    } else {
+      validation.noSchemaError(collection);
+    }
   }
 }
