@@ -6,6 +6,8 @@
 import * as mongoDB from 'mongodb';
 import { Schema, z } from 'zod';
 import { validation } from '../errors';
+import { collection } from '../errors';
+import { collectionDoesNotExist } from '../errors/collection';
 import { CollectionClass } from '../types/collection';
 import { validateSafe, validateUnsafe } from '../validation/validate';
 
@@ -73,8 +75,12 @@ export class imongo {
    */
   public collection(collectionName: string) {
     const _collection = this.collections?.get(collectionName)?.collection;
-    this.lastcalledcollection = collectionName;
-    return _collection;
+    if (_collection != undefined) {
+      this.lastcalledcollection = collectionName;
+      return _collection;
+    } else {
+      collection.collectionDoesNotExist(collectionName);
+    }
   }
 
   /**
