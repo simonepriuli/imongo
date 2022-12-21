@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="icon.svg" width="200px" align="center" alt="IMongo logo" />
+  <img src="https://raw.githubusercontent.com/simonepriuli/imongo/622fcca6ef66de9140fa4287147ae08b74b7d46a/static/icon.svg" width="200px" align="center" alt="IMongo logo" />
   <h1 align="center">IMongo</h1>
   <p align="center">
     ✨ <a href="https://imongo.priuli.co/">IMongo docs.</a> ✨
