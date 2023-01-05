@@ -10,7 +10,7 @@
 
 #
 
-IMongo is a TypeScript package that provides schema validation and interaction helpers for MongoDB through Zod.
+IMongo is a TypeScript package that provides schema validation (through Zod) and connection helpers for MongoDB.
 
 These are some of the features that IMongo offers:
 
